@@ -50,6 +50,25 @@ To run the container with volume mounting for persistence, use:
 docker run -d -p 8000:8000 -v /path/to/local/dir:/home/coder/project code-tunnel/vscode-web
 ```
 
+### Using Docker Compose
+Create a docker-compose.yml file:
+```yaml
+version: "3.8"
+services:
+  vscode-web:
+    image: code-tunnel/vscode-web
+    ports:
+      - "8000:8000"
+    environment:
+      - CONNECTION_TOKEN=your_token  # optional
+    volumes:
+      - /path/to/local/dir:/home/coder/project  # optional
+```
+Then start the container with:
+```bash
+docker-compose up -d
+```
+
 ## Configuration
 The following environment variables can be used to configure the container:
 
