@@ -59,9 +59,22 @@ RUN mkdir -p ${HOME}/temp-vscode && \
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/home/code-tunnel/.cargo/bin:/home/code-tunnel:${PATH}"
 
-# Set default environment variable for connection token
-ENV CONNECTION_TOKEN=""
+# Add startup script
+USER root
+COPY <<-"EOF" /usr/local/bin/startup.sh
+#!/bin/bash
+if [ -z "${CONNECTION_TOKEN}" ]; then
+    echo "ERROR: CONNECTION_TOKEN environment variable is required"
+    exit 1
+fi
+exec /usr/local/bin/code-insiders serve-web \
+    --accept-server-license-terms \
+    --connection-token "${CONNECTION_TOKEN}" \
+    --host 0.0.0.0 \
+    --port 8000
+EOF
+RUN chmod +x /usr/local/bin/startup.sh
 
-# Change entrypoint to use serve-web instead of tunnel
-ENTRYPOINT ["/bin/sh", "-c", "/usr/local/bin/code-insiders serve-web --accept-server-license-terms --connection-token ${CONNECTION_TOKEN} --host 0.0.0.0 --port 8000"]
+USER code-tunnel
+ENTRYPOINT ["/usr/local/bin/startup.sh"]
 
