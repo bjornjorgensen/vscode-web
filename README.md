@@ -23,31 +23,31 @@ Docker image for VS Code Web - a containerized version of Visual Studio Code run
 ### Quick Start
 Run the container with:
 ```bash
-docker run -d -p 8000:8000 code-tunnel/vscode-web
+docker run -d -p 8000:8000 bjornjorgensen/vscode-web
 ```
 
 ### With Connection Token
 To set a connection token, use:
 ```bash
-docker run -d -p 8000:8000 -e CONNECTION_TOKEN="your_token" code-tunnel/vscode-web
+docker run -d -p 8000:8000 -e CONNECTION_TOKEN="your_token" bjornjorgensen/vscode-web
 ```
 
 ### With Custom Port
 To run the container on a custom port, use:
 ```bash
-docker run -d -p <custom_port>:8000 code-tunnel/vscode-web
+docker run -d -p <custom_port>:8000 bjornjorgensen/vscode-web
 ```
 
 ### With Custom Port and Connection Token
 To run the container on a custom port with a connection token, use:
 ```bash
-docker run -d -p <custom_port>:8000 -e CONNECTION_TOKEN="your_token" code-tunnel/vscode-web
+docker run -d -p <custom_port>:8000 -e CONNECTION_TOKEN="your_token" bjornjorgensen/vscode-web
 ```
 
 ### With Volume Mounting
 To run the container with volume mounting for persistence, use:
 ```bash
-docker run -d -p 8000:8000 -v /path/to/local/dir:/home/coder/project code-tunnel/vscode-web
+docker run -d -p 8000:8000 -v /path/to/local/dir:/home/coder/project bjornjorgensen/vscode-web
 ```
 
 ### Using Docker Compose
@@ -56,7 +56,7 @@ Create a docker-compose.yml file:
 version: "3.8"
 services:
   vscode-web:
-    image: code-tunnel/vscode-web
+    image: bjornjorgensen/vscode-web
     ports:
       - "8000:8000"
     environment:
