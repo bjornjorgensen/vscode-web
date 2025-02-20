@@ -55,22 +55,20 @@ RUN mkdir -p ${HOME}/temp-vscode && \
     rm -rf ${HOME}/temp-vscode && \
     mkdir -p ${HOME}/.vscode-cli ${HOME}/.vscode-insiders/cli ${HOME}/.vscode-insiders/data ${HOME}/.vscode-insiders/extensions ${HOME}/.vscode-server ${HOME}/.vscode-server-insiders
 
-# Install Rust and update PATH
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+USER code-tunnel
+WORKDIR /home/code-tunnel
+    
+# Install Rust and verify
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup.sh && \
+    sh rustup.sh -y && \
+    rm rustup.sh && \
     echo 'export PATH=$HOME/.cargo/bin:$PATH' >> ${HOME}/.bashrc && \
     echo 'export PATH=$HOME/.cargo/bin:$PATH' >> ${HOME}/.profile && \
-    bash -c "source \$HOME/.cargo/env && rustc --version"
-# Ensure cargo bin is in PATH for all sessions
-RUN echo 'export PATH=$HOME/.cargo/bin:$PATH' >> ${HOME}/.bashrc
-
-# Update PATH environment variable; moving this after Rust installation
+    /home/code-tunnel/.cargo/bin/rustc --version
+    
+# Update PATH for all sessions
 ENV PATH=/home/code-tunnel/.cargo/bin:/home/code-tunnel:$PATH
 ENV SHELL=/bin/bash
-
-# Insert new global Rust environment file so all shells source it
-USER root
-RUN echo 'source /home/code-tunnel/.cargo/env' > /etc/profile.d/rust.sh && \
-    chmod +x /etc/profile.d/rust.sh
 
 # Add startup script
 USER root
