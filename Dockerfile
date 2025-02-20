@@ -56,7 +56,9 @@ RUN mkdir -p ${HOME}/temp-vscode && \
     mkdir -p ${HOME}/.vscode-cli ${HOME}/.vscode-insiders/cli ${HOME}/.vscode-insiders/data ${HOME}/.vscode-insiders/extensions ${HOME}/.vscode-server ${HOME}/.vscode-server-insiders
 
 # Install Rust and update PATH
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+    echo 'source $HOME/.cargo/env' >> ${HOME}/.bashrc && \
+    source ${HOME}/.cargo/env
 ENV PATH="/home/code-tunnel/.cargo/bin:/home/code-tunnel:${PATH}"
 
 # Add startup script
