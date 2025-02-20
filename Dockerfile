@@ -60,8 +60,11 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
     echo 'source "$HOME/.cargo/env"' >> ${HOME}/.bashrc && \
     echo 'source "$HOME/.cargo/env"' >> ${HOME}/.profile && \
     . "$HOME/.cargo/env"
+# Ensure cargo bin is in PATH for all sessions
+RUN echo 'export PATH=$HOME/.cargo/bin:$PATH' >> ${HOME}/.bashrc
 
-ENV PATH="/home/code-tunnel/.cargo/bin:/home/code-tunnel:${PATH}"
+# Update PATH environment variable; moving this after Rust installation
+ENV PATH=/home/code-tunnel/.cargo/bin:/home/code-tunnel:$PATH
 ENV SHELL=/bin/bash
 
 # Add startup script
