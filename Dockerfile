@@ -67,6 +67,11 @@ RUN echo 'export PATH=$HOME/.cargo/bin:$PATH' >> ${HOME}/.bashrc
 ENV PATH=/home/code-tunnel/.cargo/bin:/home/code-tunnel:$PATH
 ENV SHELL=/bin/bash
 
+# Insert new global Rust environment file so all shells source it
+USER root
+RUN echo 'source /home/code-tunnel/.cargo/env' > /etc/profile.d/rust.sh && \
+    chmod +x /etc/profile.d/rust.sh
+
 # Add startup script
 USER root
 COPY <<-"EOF" /usr/local/bin/startup.sh
