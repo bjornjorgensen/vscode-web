@@ -64,8 +64,9 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup.sh && \
     rm rustup.sh && \
     echo 'export PATH=$HOME/.cargo/bin:$PATH' >> ${HOME}/.bashrc && \
     echo 'export PATH=$HOME/.cargo/bin:$PATH' >> ${HOME}/.profile && \
-    /home/code-tunnel/.cargo/bin/rustc --version
-    
+    . "$HOME/.cargo/env" && \
+    rustc --version
+
 # Update PATH for all sessions
 ENV PATH=/home/code-tunnel/.cargo/bin:/home/code-tunnel:$PATH
 ENV SHELL=/bin/bash
