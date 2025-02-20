@@ -57,8 +57,9 @@ RUN mkdir -p ${HOME}/temp-vscode && \
 
 # Install Rust and update PATH
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
-    echo 'source $HOME/.cargo/env' >> ${HOME}/.bashrc && \
-    source ${HOME}/.cargo/env
+    echo '. "$HOME/.cargo/env"' >> ${HOME}/.bashrc && \
+    . $HOME/.cargo/env
+
 ENV PATH="/home/code-tunnel/.cargo/bin:/home/code-tunnel:${PATH}"
 
 # Add startup script
