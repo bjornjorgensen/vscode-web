@@ -57,9 +57,9 @@ RUN mkdir -p ${HOME}/temp-vscode && \
 
 # Install Rust and update PATH
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
-    echo 'source "$HOME/.cargo/env"' >> ${HOME}/.bashrc && \
-    echo 'source "$HOME/.cargo/env"' >> ${HOME}/.profile && \
-    . "$HOME/.cargo/env"
+    echo 'export PATH=$HOME/.cargo/bin:$PATH' >> ${HOME}/.bashrc && \
+    echo 'export PATH=$HOME/.cargo/bin:$PATH' >> ${HOME}/.profile && \
+    bash -c "source \$HOME/.cargo/env && rustc --version"
 # Ensure cargo bin is in PATH for all sessions
 RUN echo 'export PATH=$HOME/.cargo/bin:$PATH' >> ${HOME}/.bashrc
 
