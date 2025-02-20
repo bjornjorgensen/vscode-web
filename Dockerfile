@@ -59,7 +59,7 @@ RUN mkdir -p ${HOME}/temp-vscode && \
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
     echo 'source "$HOME/.cargo/env"' >> ${HOME}/.bashrc && \
     echo 'source "$HOME/.cargo/env"' >> ${HOME}/.profile && \
-    source $HOME/.cargo/env
+    . "$HOME/.cargo/env"
 
 ENV PATH="/home/code-tunnel/.cargo/bin:/home/code-tunnel:${PATH}"
 ENV SHELL=/bin/bash
