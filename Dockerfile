@@ -59,16 +59,24 @@ USER code-tunnel
 WORKDIR /home/code-tunnel
     
 # Install Rust and verify
+ENV RUSTUP_HOME=/opt/rust/rustup
+ENV CARGO_HOME=/opt/rust/cargo
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup.sh && \
+    sudo mkdir -p /opt/rust && \
+    sudo chown -R code-tunnel:code-tunnel /opt/rust && \
     sh rustup.sh -y && \
     rm rustup.sh && \
-    echo 'export PATH=$HOME/.cargo/bin:$PATH' >> ${HOME}/.bashrc && \
-    echo 'export PATH=$HOME/.cargo/bin:$PATH' >> ${HOME}/.profile && \
-    . "$HOME/.cargo/env" && \
+    echo 'export RUSTUP_HOME=/opt/rust/rustup' >> ${HOME}/.bashrc && \
+    echo 'export CARGO_HOME=/opt/rust/cargo' >> ${HOME}/.bashrc && \
+    echo 'export PATH=/opt/rust/cargo/bin:$PATH' >> ${HOME}/.bashrc && \
+    echo 'export RUSTUP_HOME=/opt/rust/rustup' >> ${HOME}/.profile && \
+    echo 'export CARGO_HOME=/opt/rust/cargo' >> ${HOME}/.profile && \
+    echo 'export PATH=/opt/rust/cargo/bin:$PATH' >> ${HOME}/.profile && \
+    . "/opt/rust/cargo/env" && \
     rustc --version
 
 # Update PATH for all sessions
-ENV PATH=/home/code-tunnel/.cargo/bin:/home/code-tunnel:$PATH
+ENV PATH=/opt/rust/cargo/bin:$PATH
 ENV SHELL=/bin/bash
 
 # Add startup script
